@@ -6,11 +6,13 @@ const { Category, Product } = require('../../models');
 router.get('/', (req, res) => {
   // find all categories
   // be sure to include its associated Products
-  Category.findAll({
-    include: [
-      Product
-    ],
-  })
+  Category.findAll(
+    //{
+    //   include: [
+    //     Product
+    //   ],
+    // }
+  )
     .then(dbCategoryData => res.json(dbCategoryData))
     .catch(err => {
       console.log(err);
@@ -25,18 +27,12 @@ router.get('/:id', (req, res) => {
     where: {
       id: req.params.id
     },
-    include: [
-      Product
-    ],
+    // include: [
+    //   Product
+    // ],
   })
-    .then(dbCategoryData => {
-      if (!dbCategoryData) {
-        res.status(404).json({ message: 'No category found with this id!' });
-        return;
-      }
-      res.json(dbCategoryData);
-    })
-    .catch(err => {
+    .then((dbCategoryData) => res.json(dbCategoryData))
+    .catch((err) => {
       console.log(err);
       res.status(500).json(err);
     });
@@ -60,37 +56,25 @@ router.put('/:id', (req, res) => {
       id: req.params.id,
     },
   })
-  .then((dbCategoryData) => {
-    if (!dbCategoryData) {
-      res.status(404).json({ message: 'No category found with this id' });
-      return;
-    }
-    res.json(dbCategoryData);
-  })
-  .catch(err => {
-    console.log(err);
-    res.status(500).json(err);
-  });
+    .then((dbCategoryData) => res.json(dbCategoryData))
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete("/:id", (req, res) => {
   // delete a category by its `id` value
   Category.destroy({
     where: {
-      id: req.params.id
-    }
-    .then(dbCategoryData => {
-      if (!dbCategoryData) {
-        res.status(404).json({ message: 'No category found with this id' });
-        return;
-      }
-      res.json(dbCategoryData);
-    })
-    .catch(err => {
+      id: req.params.id,
+    },
+  })
+    .then((dbCategoryData) => res.json(dbCategoryData))
+    .catch((err) => {
       console.log(err);
       res.status(500).json(err);
-    })
-  })
+    });
 });
 
 module.exports = router;
